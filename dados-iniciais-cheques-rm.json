@@ -1,0 +1,835 @@
+{
+  "lotes": [
+    {
+      "id": "L1",
+      "cliente": "MAURICIO ALOISIO DE CAMARGO",
+      "desc": "Recebido direto do emitente",
+      "data": "",
+      "obs": "Importado da planilha CONTROLES_CHEQUES_CLIENTES_RM.xlsx",
+      "criadoEm": 1781806214059
+    },
+    {
+      "id": "L2",
+      "cliente": "ALIANCE INVESTIMENTOS E SER. LTDA",
+      "desc": "Recebido direto do emitente",
+      "data": "",
+      "obs": "Importado da planilha CONTROLES_CHEQUES_CLIENTES_RM.xlsx",
+      "criadoEm": 1781806214060
+    },
+    {
+      "id": "L3",
+      "cliente": "NEUMANN VEICULOS LTDA",
+      "desc": "Recebido direto do emitente",
+      "data": "",
+      "obs": "Importado da planilha CONTROLES_CHEQUES_CLIENTES_RM.xlsx",
+      "criadoEm": 1781806214061
+    },
+    {
+      "id": "L4",
+      "cliente": "REFRICOMP",
+      "desc": "",
+      "data": "",
+      "obs": "Importado da planilha CONTROLES_CHEQUES_CLIENTES_RM.xlsx",
+      "criadoEm": 1781806214062
+    },
+    {
+      "id": "L5",
+      "cliente": "PAULISTA",
+      "desc": "",
+      "data": "",
+      "obs": "Importado da planilha CONTROLES_CHEQUES_CLIENTES_RM.xlsx",
+      "criadoEm": 1781806214063
+    }
+  ],
+  "cheques": [
+    {
+      "id": "K1",
+      "loteId": "L1",
+      "numero": "350 - AAA - C2",
+      "emitente": "MAURICIO ALOISIO DE CAMARGO",
+      "doc": "020.143.040-017",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 5000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214059,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 5000,00",
+          "data": null,
+          "ts": 1781806214059
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214060
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K2",
+      "loteId": "L1",
+      "numero": "349 - AAA - C2",
+      "emitente": "MAURICIO ALOISIO DE CAMARGO",
+      "doc": "020.143.040-017",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 5000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214060,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 5000,00",
+          "data": null,
+          "ts": 1781806214060
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214061
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K3",
+      "loteId": "L2",
+      "numero": "700002",
+      "emitente": "ALIANCE INVESTIMENTOS E SER. LTDA",
+      "doc": "12.911.739/0001-34",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 75000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214061,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 75000,00",
+          "data": null,
+          "ts": 1781806214061
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214062
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K4",
+      "loteId": "L3",
+      "numero": "3393",
+      "emitente": "NEUMANN VEICULOS LTDA",
+      "doc": "",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 5000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214062,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 5000,00",
+          "data": null,
+          "ts": 1781806214062
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a EQUIPEÇAS",
+          "data": null,
+          "ts": 1781806214063
+        }
+      ],
+      "fornecedor": "EQUIPEÇAS",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K5",
+      "loteId": "L4",
+      "numero": "1075",
+      "emitente": "CONSERVEX IND E COM. REFR LTDA",
+      "doc": "50221795/0003-06",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 24150.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214063,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 24150,00",
+          "data": null,
+          "ts": 1781806214063
+        }
+      ]
+    },
+    {
+      "id": "K6",
+      "loteId": "L4",
+      "numero": "1074",
+      "emitente": "CONSERVEX IND E COM. REFR LTDA",
+      "doc": "50221795/0003-06",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 24350.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214064,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 24350,00",
+          "data": null,
+          "ts": 1781806214064
+        }
+      ]
+    },
+    {
+      "id": "K7",
+      "loteId": "L4",
+      "numero": "11443",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "000021726/0001-00",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4176.62,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214065,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4176,62",
+          "data": null,
+          "ts": 1781806214065
+        }
+      ]
+    },
+    {
+      "id": "K8",
+      "loteId": "L4",
+      "numero": "2637",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "011128090/0001-17",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4479.34,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214066,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4479,34",
+          "data": null,
+          "ts": 1781806214066
+        }
+      ]
+    },
+    {
+      "id": "K9",
+      "loteId": "L4",
+      "numero": "2590",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "011128090/0001-17",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4513.96,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214067,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4513,96",
+          "data": null,
+          "ts": 1781806214067
+        }
+      ]
+    },
+    {
+      "id": "K10",
+      "loteId": "L4",
+      "numero": "2638",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "011128090/0001-17",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4479.34,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214068,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4479,34",
+          "data": null,
+          "ts": 1781806214068
+        }
+      ]
+    },
+    {
+      "id": "K11",
+      "loteId": "L4",
+      "numero": "2591",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "011128090/0001-17",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4513.96,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214069,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4513,96",
+          "data": null,
+          "ts": 1781806214069
+        }
+      ]
+    },
+    {
+      "id": "K12",
+      "loteId": "L4",
+      "numero": "8818",
+      "emitente": "MAGNOLIA ALVES DIAS ME",
+      "doc": "006289927/0001-70",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214070,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4000,00",
+          "data": null,
+          "ts": 1781806214070
+        }
+      ]
+    },
+    {
+      "id": "K13",
+      "loteId": "L4",
+      "numero": "853801",
+      "emitente": "LUDMEC FRIOS LTDA",
+      "doc": "08987061/0001-04",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 9095.5,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214071,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 9095,50",
+          "data": null,
+          "ts": 1781806214071
+        }
+      ]
+    },
+    {
+      "id": "K14",
+      "loteId": "L4",
+      "numero": "360",
+      "emitente": "JOÃO BATISTA  MATOS REFRIGERAÇÃO",
+      "doc": "400893170001-60",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4978.5,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214072,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4978,50",
+          "data": null,
+          "ts": 1781806214072
+        }
+      ]
+    },
+    {
+      "id": "K15",
+      "loteId": "L4",
+      "numero": "80",
+      "emitente": "SILVA E CRUZ LTDA ME",
+      "doc": "019650790001-58",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 120790.22,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214073,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 120790,22",
+          "data": null,
+          "ts": 1781806214073
+        }
+      ]
+    },
+    {
+      "id": "K16",
+      "loteId": "L4",
+      "numero": "490",
+      "emitente": "JOÃO BATISTA  MATOS REFRIGERAÇÃO",
+      "doc": "400893170001-60",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 5249.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214074,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 5249,00",
+          "data": null,
+          "ts": 1781806214074
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214075
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K17",
+      "loteId": "L4",
+      "numero": "853313",
+      "emitente": "JOSE AUGUSTO FERRARESE FRAZILLI",
+      "doc": "031.931.908-37",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 27666.48,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214075,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 27666,48",
+          "data": null,
+          "ts": 1781806214075
+        }
+      ]
+    },
+    {
+      "id": "K18",
+      "loteId": "L4",
+      "numero": "1546",
+      "emitente": "KELLY DE ALMEIDA DIAS - ME",
+      "doc": "011.405.391/0001-40",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 3001.88,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214076,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 3001,88",
+          "data": null,
+          "ts": 1781806214076
+        }
+      ]
+    },
+    {
+      "id": "K19",
+      "loteId": "L4",
+      "numero": "276",
+      "emitente": "GILIO REFRIGERAÇÃO LTDA",
+      "doc": "036.655.128/0001-54",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 11326.83,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214077,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 11326,83",
+          "data": null,
+          "ts": 1781806214077
+        }
+      ]
+    },
+    {
+      "id": "K20",
+      "loteId": "L4",
+      "numero": "443",
+      "emitente": "JOÃO BATISTA  MATOS REFRIGERAÇÃO",
+      "doc": "400893170001-60",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 9570.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214078,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 9570,00",
+          "data": null,
+          "ts": 1781806214078
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a SOMA SOLUÇÕES",
+          "data": null,
+          "ts": 1781806214079
+        }
+      ],
+      "fornecedor": "SOMA SOLUÇÕES",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K21",
+      "loteId": "L4",
+      "numero": "2654",
+      "emitente": "TOTAL EQUIPA INSTALAÇÕES COM. LTDA",
+      "doc": "011.128.090/0001-17",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4479.34,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214079,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4479,34",
+          "data": null,
+          "ts": 1781806214079
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214080
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K22",
+      "loteId": "L4",
+      "numero": "7",
+      "emitente": "ROSELENE INES VIZZOTTO",
+      "doc": "389.599.760/91",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 8400.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214080,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 8400,00",
+          "data": null,
+          "ts": 1781806214080
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a MÁXIMO",
+          "data": null,
+          "ts": 1781806214081
+        }
+      ],
+      "fornecedor": "MÁXIMO",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K23",
+      "loteId": "L4",
+      "numero": "253",
+      "emitente": "MARCIO FREISLEBEN",
+      "doc": "772.889.980/53",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214081,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4000,00",
+          "data": null,
+          "ts": 1781806214081
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214082
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K24",
+      "loteId": "L4",
+      "numero": "710",
+      "emitente": "MERCADO ECONOMICO",
+      "doc": "942.202.90/0001-22",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4807.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214082,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4807,00",
+          "data": null,
+          "ts": 1781806214082
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214083
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K25",
+      "loteId": "L4",
+      "numero": "1492",
+      "emitente": "CLARICE DE LOURDES DUARTE LIMA",
+      "doc": "088.235.07/0001-57",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 8666.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214083,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 8666,00",
+          "data": null,
+          "ts": 1781806214083
+        }
+      ]
+    },
+    {
+      "id": "K26",
+      "loteId": "L4",
+      "numero": "11383",
+      "emitente": "EQUIPA TOTAL COM. DE MAQ.",
+      "doc": "000.021.726/0001-00",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 4700.4,
+      "bomPara": "",
+      "obs": "",
+      "status": "repassado",
+      "criadoEm": 1781806214084,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 4700,40",
+          "data": null,
+          "ts": 1781806214084
+        },
+        {
+          "tipo": "Repassado",
+          "detalhe": "Entregue a PERFITEC",
+          "data": null,
+          "ts": 1781806214085
+        }
+      ],
+      "fornecedor": "PERFITEC",
+      "repassadoEm": "",
+      "refRepasse": ""
+    },
+    {
+      "id": "K27",
+      "loteId": "L4",
+      "numero": "850504",
+      "emitente": "INDUSTRIAS E COMERCIO DE REFRIG. VATORANTINENSE",
+      "doc": "12.940.035/0001-90",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 12634.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214085,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 12634,00",
+          "data": null,
+          "ts": 1781806214085
+        }
+      ]
+    },
+    {
+      "id": "K28",
+      "loteId": "L5",
+      "numero": "699",
+      "emitente": "NESSY MATERIAIS DE CONSTRUÇÃO LTDA",
+      "doc": "04355212/0001-42",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 50000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214086,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 50000,00",
+          "data": null,
+          "ts": 1781806214086
+        }
+      ]
+    },
+    {
+      "id": "K29",
+      "loteId": "L5",
+      "numero": "3351",
+      "emitente": "KUNRATH AUTOMÓVEIS",
+      "doc": "00286817/0001-78",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 7000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214087,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 7000,00",
+          "data": null,
+          "ts": 1781806214087
+        }
+      ]
+    },
+    {
+      "id": "K30",
+      "loteId": "L5",
+      "numero": "3",
+      "emitente": "ALIANCE INVESTIMENTOS E SERVIÇOS",
+      "doc": "12911739/0001-34",
+      "banco": "___",
+      "agencia": "",
+      "conta": "",
+      "valor": 5000.0,
+      "bomPara": "",
+      "obs": "",
+      "status": "carteira",
+      "criadoEm": 1781806214088,
+      "hist": [
+        {
+          "tipo": "Importado",
+          "detalhe": "Importado da planilha · 5000,00",
+          "data": null,
+          "ts": 1781806214088
+        }
+      ]
+    }
+  ]
+}
