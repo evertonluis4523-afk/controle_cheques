@@ -619,13 +619,13 @@ const STORE_KEY = "rm_cheques_v1";
    ele passa a sincronizar na nuvem, no nó definido em DB_NODE.
    ========================================================================= */
 const FIREBASE_CONFIG = {
-  apiKey: "SEU_API_KEY",
+  apiKey: "AIzaSyBDOR9f748UNoGP5c72Y-vdmDBcffM8tMI",
   authDomain: "rm-contas.firebaseapp.com",
   databaseURL: "https://rm-contas-default-rtdb.firebaseio.com",
   projectId: "rm-contas",
   storageBucket: "rm-contas.appspot.com",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
+  messagingSenderId: "414740463069",
+  appId: "1:414740463069:web:f8035314dcfbf962c80a34"
 };
 const DB_NODE = "cheques";   // nó separado deste app dentro do projeto rm-contas
 
@@ -643,6 +643,14 @@ function firebaseConfigured(){ try{ return FIREBASE_CONFIG.apiKey && !/SEU_/.tes
 function savedFbConfig(){ try{ const raw=localStorage.getItem(FBCFG_KEY); if(raw){ const c=JSON.parse(raw); if(c&&c.apiKey&&c.databaseURL) return c; } }catch(e){} return null; }
 function activeFirebaseConfig(){ return savedFbConfig() || (firebaseConfigured()?FIREBASE_CONFIG:null); }
 function toArr(x){ return Array.isArray(x)? x : (x && typeof x==="object"? Object.values(x) : []); }
+// União por id de dois bancos locais (ex: cache deste dispositivo + o que já
+// está na nuvem), sem descartar nenhum lote/cheque — usada só na primeira
+// conexão de um dispositivo ao Firebase.
+function mergeDB(a,b){
+  const lotesById={}; (a.lotes||[]).forEach(l=>lotesById[l.id]=l); (b.lotes||[]).forEach(l=>{ if(!lotesById[l.id]) lotesById[l.id]=l; });
+  const chequesById={}; (a.cheques||[]).forEach(c=>chequesById[c.id]=c); (b.cheques||[]).forEach(c=>{ if(!chequesById[c.id]) chequesById[c.id]=c; });
+  return {lotes:Object.values(lotesById), cheques:Object.values(chequesById)};
+}
 function loadDB(){
   if(canUseLS()){
     storageMode="local";
@@ -676,9 +684,23 @@ function initCloud(){
     const onValue=snap=>{
       const val=snap.val();
       if(val && (val.lotes||val.cheques)){
-        db={lotes:toArr(val.lotes), cheques:toArr(val.cheques)};
+        const cloudDB={lotes:toArr(val.lotes), cheques:toArr(val.cheques)};
+        if(!cloudInit){
+          // Primeira conexão deste dispositivo: mescla o que já tinha salvo
+          // localmente com o que já está na nuvem, por id, em vez de
+          // simplesmente substituir. Sem isso, o dispositivo que conecta
+          // primeiro "vence" e o outro perde silenciosamente os lançamentos
+          // que só existiam nele (ex: cheques lançados no PC e ainda não
+          // sincronizados quando o celular conecta pela primeira vez).
+          const merged=mergeDB(db, cloudDB);
+          cloudInit=true;
+          db=merged;
+          dbRef.set(db).catch(()=>{});
+          db.lotes.forEach(l=>ui.openLotes.add(l.id));
+        } else {
+          db=cloudDB;
+        }
         cacheLocal();
-        if(!cloudInit){ cloudInit=true; db.lotes.forEach(l=>ui.openLotes.add(l.id)); }
         render();
       } else if(val===null && !cloudInit){
         // nuvem vazia na primeira conexão: sobe os dados atuais (cache local / seed)
