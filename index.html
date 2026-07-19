@@ -34,15 +34,15 @@ input,select,textarea{font-family:inherit;font-size:14px}
 ::-webkit-scrollbar-thumb{background:#d4d4d8;border-radius:6px}
 
 /* App bar */
-.appbar{background:var(--appbar);color:#fff;position:sticky;top:0;z-index:40;border-bottom:3px solid var(--accent)}
+.appbar{background:var(--surface);color:var(--ink);position:sticky;top:0;z-index:40;border-bottom:1px solid var(--border)}
 .appbar-inner{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:14px}
 .brand{display:flex;align-items:center;gap:11px}
 .brand-mark{width:34px;height:34px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-weight:800;font-size:16px;letter-spacing:.5px}
 .brand h1{font-size:16px;font-weight:700;margin:0;letter-spacing:.2px}
-.brand p{margin:0;font-size:11px;color:#a3a3a3;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
+.brand p{margin:0;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.3px;text-transform:uppercase}
 .appbar-spacer{flex:1}
 .appbar-actions{display:flex;gap:8px;align-items:center}
-.storage-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:#262626;color:#a3a3a3;display:flex;align-items:center;gap:6px}
+.storage-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);display:flex;align-items:center;gap:6px}
 .storage-pill .dot{width:7px;height:7px;border-radius:50%;background:#22c55e}
 .storage-pill.local .dot{background:#f59e0b}
 .storage-pill.off .dot{background:#f59e0b}
@@ -52,8 +52,8 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .btn:hover{background:var(--surface-2);border-color:#d4d4d8}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
-.btn.ghost-light{background:transparent;border-color:#3a3a3a;color:#e5e5e5}
-.btn.ghost-light:hover{background:#262626}
+.btn.ghost-light{background:transparent;border-color:var(--border);color:var(--ink)}
+.btn.ghost-light:hover{background:var(--surface-2)}
 .btn.sm{padding:6px 10px;font-size:12px;border-radius:7px}
 .btn.danger{color:var(--accent);border-color:#f0caca}
 .btn.danger:hover{background:var(--accent-soft)}
