@@ -84,6 +84,18 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .filter-sel{padding:9px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);font-weight:500;color:var(--ink)}
 .toolbar-spacer{flex-basis:100%;height:0}
 
+.sel-bar{display:none;align-items:center;gap:14px;justify-content:space-between;
+  background:var(--ink);color:#fff;border-radius:11px;padding:10px 14px;margin-bottom:14px;
+  position:sticky;top:8px;z-index:30;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.sel-bar b{color:#fff}
+.sel-actions{display:flex;gap:8px}
+.sel-actions .btn{background:#2a2a2d;border-color:#3a3a3a;color:#fff}
+.sel-actions .btn:hover{background:#333336}
+.sel-actions .btn.primary{background:var(--accent);border-color:var(--accent)}
+.sel-actions .btn.primary:hover{background:var(--accent-dark)}
+.sel-cell{width:34px;text-align:center}
+.sel-cell input,.ch-table thead .sel-cell input{width:16px;height:16px;cursor:pointer}
+
 /* Lote card */
 .lote{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
 .lote-head{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none}
@@ -203,7 +215,11 @@ input,select,textarea{font-family:inherit;font-size:14px}
 
 .hidden-file{display:none}
 @media(max-width:920px){.cards{grid-template-columns:repeat(2,1fr)}.ch-table .hide-sm{display:none}.grid3{grid-template-columns:1fr}}
-@media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.brand p{display:none}}
+@media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.brand p{display:none}
+  .sel-bar{flex-direction:column;align-items:stretch;gap:10px}
+  .sel-actions{justify-content:stretch}
+  .sel-actions .btn{flex:1}
+}
 </style>
 </head>
 <body>
@@ -249,6 +265,14 @@ input,select,textarea{font-family:inherit;font-size:14px}
     <button class="btn sm" onclick="app.exportCSV()" title="Exportar planilha">⤓ CSV</button>
   </div>
 
+  <div id="selBar" class="sel-bar">
+    <span id="selInfo"></span>
+    <div class="sel-actions">
+      <button class="btn sm primary" onclick="app.openMoveLote()">⇄ Mover para lote</button>
+      <button class="btn sm" onclick="app.clearSelection()">Limpar seleção</button>
+    </div>
+  </div>
+
   <div id="content"></div>
 </div>
 
@@ -285,6 +309,37 @@ input,select,textarea{font-family:inherit;font-size:14px}
     <div class="modal-foot">
       <button class="btn" onclick="app.closeAll()">Cancelar</button>
       <button class="btn primary" onclick="app.saveLote()">Salvar lote</button>
+    </div>
+  </div>
+</div>
+
+<!-- Move to lote modal -->
+<div class="overlay" id="moveOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h2>Mover para outro lote</h2><p id="moveSub"></p></div>
+      <button class="x" onclick="app.closeAll()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Lote de destino</label>
+        <select id="moveLoteSel" onchange="app.onMoveLoteChange()"></select>
+      </div>
+      <div id="moveNovoFields">
+        <div class="field">
+          <label>Cliente / origem <span style="color:var(--accent)">*</span></label>
+          <input id="moveNovoCliente" list="clientesList" placeholder="Ex.: Refricomp">
+          <div class="hint">Cria um lote novo com a data de hoje e move os cheques selecionados pra ele.</div>
+        </div>
+        <div class="field">
+          <label>Descrição / obra</label>
+          <input id="moveNovoDesc" placeholder="Ex.: Consolidado em ...">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="app.closeAll()">Cancelar</button>
+      <button class="btn primary" id="moveConfirmBtn" onclick="app.confirmMove()">Mover</button>
     </div>
   </div>
 </div>
@@ -661,7 +716,7 @@ function bankShort(code){ const l=bankLabel(code); return l.split(" · ")[1]||l;
 
 /* ---------- state ---------- */
 let db = loadDB();
-let ui = { tab:"lotes", q:"", status:"", openLotes:new Set() };
+let ui = { tab:"lotes", q:"", status:"", openLotes:new Set(), selected:new Set() };
 let genMode = "unit";
 let actContext = null;
 
@@ -691,6 +746,16 @@ function updateStoragePill(){
 function chequesByLote(loteId){ return db.cheques.filter(c=>c.loteId===loteId); }
 function loteTotal(loteId){ return chequesByLote(loteId).reduce((s,c)=>s+(Number(c.valor)||0),0); }
 function statusCounts(list){ const o={}; list.forEach(c=>o[c.status]=(o[c.status]||0)+1); return o; }
+
+/* ---------- seleção múltipla ---------- */
+function sumSelected(){ return db.cheques.filter(c=>ui.selected.has(c.id)).reduce((s,c)=>s+(Number(c.valor)||0),0); }
+function renderSelBar(){
+  const bar=$("selBar");
+  if(!bar) return;
+  if(ui.selected.size===0){ bar.style.display="none"; return; }
+  bar.style.display="flex";
+  $("selInfo").innerHTML=`<b>${ui.selected.size}</b> selecionado(s) · <b class="mono">${brl(sumSelected())}</b>`;
+}
 
 /* ---------- dashboard ---------- */
 function renderCards(){
@@ -749,6 +814,7 @@ function destCell(c){
 function chequeRow(c){
   const st=STATUS[c.status]||STATUS.carteira;
   return `<tr>
+    <td class="sel-cell"><input type="checkbox" ${ui.selected.has(c.id)?"checked":""} onchange="app.toggleSelect('${c.id}',this.checked)"></td>
     <td><div class="ch-num mono">${esc(c.numero)||"—"}</div><div class="ch-banco">${esc(bankShort(c.banco))}</div></td>
     <td><div class="ch-emit">${esc(c.emitente)||"—"}</div>${c.doc?`<div class="doc">${esc(c.doc)}</div>`:""}</td>
     <td class="val-cell mono">${brl(c.valor)}</td>
@@ -801,7 +867,9 @@ function renderLotes(){
     const chips=Object.keys(STATUS).filter(k=>counts[k]).map(k=>`<span class="statchip" style="background:${STATUS[k].bg};color:${STATUS[k].color}"><span class="bar-dot" style="background:${STATUS[k].color}"></span>${counts[k]} ${STATUS[k].label}</span>`).join("");
     const open=ui.openLotes.has(lote.id);
     const rows = cheques.length? cheques.map(chequeRow).join("") :
-      `<tr><td colspan="7" style="text-align:center;color:var(--faint);padding:22px">Nenhum cheque ${ui.status||ui.q?"para este filtro":"lançado ainda"}.</td></tr>`;
+      `<tr><td colspan="8" style="text-align:center;color:var(--faint);padding:22px">Nenhum cheque ${ui.status||ui.q?"para este filtro":"lançado ainda"}.</td></tr>`;
+    const ids=cheques.map(c=>"'"+c.id+"'").join(",");
+    const allSel=cheques.length>0 && cheques.every(c=>ui.selected.has(c.id));
     html+=`<div class="lote ${open?"open":""}">
       <div class="lote-head" onclick="app.toggleLote('${lote.id}')">
         <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 6 6 6-6 6"/></svg>
@@ -822,13 +890,14 @@ function renderLotes(){
           <button class="btn sm danger" onclick="app.delLote('${lote.id}')">🗑 Excluir lote</button>
         </div>
         <table class="ch-table">
-          <thead><tr><th>Cheque</th><th>Emitente</th><th style="text-align:right">Valor</th><th class="hide-sm">Bom para</th><th class="hide-sm">Status</th><th class="hide-sm">Destino</th><th></th></tr></thead>
+          <thead><tr><th class="sel-cell">${cheques.length?`<input type="checkbox" ${allSel?"checked":""} onchange="app.toggleSelectAll([${ids}],this.checked)" title="Selecionar todos deste lote">`:""}</th><th>Cheque</th><th>Emitente</th><th style="text-align:right">Valor</th><th class="hide-sm">Bom para</th><th class="hide-sm">Status</th><th class="hide-sm">Destino</th><th></th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
     </div>`;
   }
   $("content").innerHTML = anyShown? html : emptyFilter();
+  renderSelBar();
 }
 
 function renderFlat(){
@@ -840,6 +909,7 @@ function renderFlat(){
   const rows=all.map(({c,l})=>{
     const st=STATUS[c.status]||STATUS.carteira;
     return `<tr>
+      <td class="sel-cell"><input type="checkbox" ${ui.selected.has(c.id)?"checked":""} onchange="app.toggleSelect('${c.id}',this.checked)"></td>
       <td><div class="ch-num mono">${esc(c.numero)||"—"}</div><div class="ch-banco">${esc(bankShort(c.banco))}</div></td>
       <td><div class="ch-emit">${esc(c.emitente)||"—"}</div><div class="ch-banco">cliente: ${esc(l.cliente)}</div></td>
       <td class="val-cell mono">${brl(c.valor)}</td>
@@ -849,11 +919,14 @@ function renderFlat(){
       <td class="kebab-wrap"><button class="kebab" onclick="app.toggleMenu(event,'${c.id}')">⋮</button><div class="menu" id="menu-${c.id}">${actionMenu(c)}</div></td>
     </tr>`;
   }).join("");
+  const idsAll=all.map(({c})=>"'"+c.id+"'").join(",");
+  const allSelFlat=all.length>0 && all.every(({c})=>ui.selected.has(c.id));
   $("content").innerHTML=`<div class="lote open"><div class="lote-body" style="display:block;border-top:none">
     <table class="ch-table">
-      <thead><tr><th>Cheque</th><th>Emitente / cliente</th><th style="text-align:right">Valor</th><th class="hide-sm">Bom para</th><th class="hide-sm">Status</th><th class="hide-sm">Destino</th><th></th></tr></thead>
+      <thead><tr><th class="sel-cell"><input type="checkbox" ${allSelFlat?"checked":""} onchange="app.toggleSelectAll([${idsAll}],this.checked)" title="Selecionar todos"></th><th>Cheque</th><th>Emitente / cliente</th><th style="text-align:right">Valor</th><th class="hide-sm">Bom para</th><th class="hide-sm">Status</th><th class="hide-sm">Destino</th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table></div></div>`;
+  renderSelBar();
 }
 
 function emptyState(){
@@ -871,6 +944,46 @@ const app = {
   onFilter(){ ui.status=$("fStatus").value; render(); },
   toggleLote(id){ if(ui.openLotes.has(id)) ui.openLotes.delete(id); else ui.openLotes.add(id); render(); },
   toggleMenu(e,id){ e.stopPropagation(); const m=$("menu-"+id); const wasOpen=m.classList.contains("show"); closeMenus(); if(!wasOpen) m.classList.add("show"); },
+
+  /* ---- Seleção múltipla ---- */
+  toggleSelect(id,checked){ if(checked) ui.selected.add(id); else ui.selected.delete(id); renderSelBar(); },
+  toggleSelectAll(ids,checked){ ids.forEach(id=>checked?ui.selected.add(id):ui.selected.delete(id)); render(); },
+  clearSelection(){ ui.selected.clear(); render(); },
+  openMoveLote(){
+    if(ui.selected.size===0) return;
+    const opts=['<option value="__novo__">+ Criar novo lote (hoje)</option>']
+      .concat([...db.lotes].sort((a,b)=>(b.criadoEm||0)-(a.criadoEm||0)).map(l=>`<option value="${l.id}">${esc(l.cliente)}${l.desc?" · "+esc(l.desc):""}</option>`));
+    $("moveLoteSel").innerHTML=opts.join("");
+    $("moveLoteSel").value="__novo__";
+    $("moveNovoFields").style.display="";
+    $("moveNovoCliente").value=""; $("moveNovoDesc").value="";
+    $("moveSub").textContent=ui.selected.size+" cheque(s) selecionado(s) · total "+brl(sumSelected());
+    $("moveConfirmBtn").textContent="Mover "+ui.selected.size+" cheque(s)";
+    show("moveOverlay"); setTimeout(()=>$("moveNovoCliente").focus(),50);
+  },
+  onMoveLoteChange(){ $("moveNovoFields").style.display = $("moveLoteSel").value==="__novo__" ? "" : "none"; },
+  confirmMove(){
+    const dest=$("moveLoteSel").value;
+    let targetId=dest;
+    if(dest==="__novo__"){
+      const cli=$("moveNovoCliente").value.trim();
+      if(!cli){ toast("Informe o cliente do novo lote.",true); $("moveNovoCliente").focus(); return; }
+      targetId=uid();
+      db.lotes.push({id:targetId,cliente:cli,desc:$("moveNovoDesc").value.trim(),data:todayISO(),obs:"",criadoEm:Date.now()});
+      ui.openLotes.add(targetId);
+    }
+    const destLote=db.lotes.find(x=>x.id===targetId);
+    let n=0;
+    db.cheques.forEach(c=>{
+      if(ui.selected.has(c.id) && c.loteId!==targetId){
+        const origem=db.lotes.find(x=>x.id===c.loteId);
+        logHist(c,"Movido",`Movido de "${origem?origem.cliente:"?"}" para "${destLote.cliente}"`);
+        c.loteId=targetId; n++;
+      }
+    });
+    saveDB(); ui.selected.clear(); closeAll(); render();
+    toast(n+" cheque(s) movido(s) para "+destLote.cliente);
+  },
 
   /* ---- Lote ---- */
   openLote(id){
