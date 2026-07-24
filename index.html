@@ -229,6 +229,42 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .toast.err{background:var(--accent)}
 
 .hidden-file{display:none}
+/* ===== Relatório PDF por lote (identidade RM) ===== */
+#printRoot{display:none}
+.rep{font-family:Arial,Helvetica,sans-serif;color:#1d2127;font-size:11px;padding:4px 2px}
+.rep .head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #dadee3;padding-bottom:14px;position:relative}
+.rep .head::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;background:linear-gradient(90deg,#8c1d18 0 33%,#585758 33% 66%,#8c1d18 66% 100%);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep .head img{height:52px;width:auto}
+.rep .co{text-align:right;font-size:10px;color:#6c7480;line-height:1.5}
+.rep .co .nm{font-size:14px;font-weight:bold;color:#1d2127;margin-bottom:2px}
+.rep .title{margin:18px 0 2px;font-size:15px;font-weight:bold;color:#8c1d18;text-transform:uppercase;letter-spacing:.4px}
+.rep .subttl{font-size:10.5px;color:#6c7480;margin-bottom:14px}
+.rep .meta{display:flex;flex-wrap:wrap;gap:5px 26px;margin-bottom:13px;font-size:10.5px;color:#42474d}
+.rep .meta b{color:#1d2127}
+.rep table{width:100%;border-collapse:collapse;margin-bottom:8px}
+.rep th{background:#1d2127;color:#fff;padding:7px 8px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep td{padding:6px 8px;border-bottom:1px solid #eceef1;font-size:10.5px;vertical-align:top}
+.rep tr:nth-child(even) td{background:#fafbfc;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep td.r,.rep th.r{text-align:right;white-space:nowrap}
+.rep td.c,.rep th.c{text-align:center}
+.rep .mono{font-family:"Courier New",monospace}
+.rep .sub{font-size:9px;color:#8a9099;margin-top:1px}
+.rep .tag{display:inline-block;padding:2px 7px;border-radius:10px;font-size:8.5px;font-weight:bold;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep .grand td{background:#8c1d18 !important;color:#fff;font-weight:bold;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep .byst{margin-top:12px}
+.rep .byst .bt{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:#8a9099;font-weight:bold;margin-bottom:5px}
+.rep .byst .row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted #dfe2e6;max-width:360px;font-size:10.5px}
+.rep .foot{margin-top:22px;text-align:center;font-size:9px;color:#9aa1aa;border-top:1px solid #dadee3;padding-top:8px}
+@media print{
+  @page{size:A4 portrait;margin:12mm 12mm}
+  html,body{background:#fff !important}
+  body > *:not(#printRoot){display:none !important}
+  #printRoot{display:block !important}
+  #rmFitBtn{display:none !important}
+  .rep table{page-break-inside:auto}
+  .rep tr{page-break-inside:avoid}
+  .rep thead{display:table-header-group}
+}
 @media(max-width:920px){.cards{grid-template-columns:repeat(2,1fr)}.ch-table .hide-sm{display:none}.grid3{grid-template-columns:1fr}}
 @media(max-width:560px){.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.brand p{display:none}
   .sel-bar{flex-direction:column;align-items:stretch;gap:10px}
@@ -629,6 +665,7 @@ input,select,textarea{font-family:inherit;font-size:14px}
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="printRoot"></div>
 
 <!-- Firebase carregado aqui (fim do body) e não no <head>: assim a tela
      aparece na hora e não fica em branco esperando o gstatic.com. A ordem
@@ -1013,6 +1050,7 @@ function renderLotes(){
           <button class="btn primary sm" onclick="app.openBatch('${lote.id}')">+ Lançar cheques</button>
           <button class="btn sm" onclick="app.openBatchEdit('${lote.id}')">⊞ Editar em lote</button>
           <button class="btn sm" onclick="app.openLote('${lote.id}')">✎ Editar lote</button>
+          <button class="btn sm" onclick="app.pdfLote('${lote.id}')" title="Gerar PDF deste lote para a contabilidade">📄 Relatório (PDF)</button>
           <button class="btn sm danger" onclick="app.delLote('${lote.id}')">🗑 Excluir lote</button>
         </div>
         <table class="ch-table">
@@ -1352,6 +1390,12 @@ const app = {
     }catch(e){ toast("Arquivo inválido.",true); } input.value=""; };
     r.readAsText(file);
   },
+  pdfLote(loteId){
+    const root=$("printRoot");
+    root.innerHTML=loteReportHTML(loteId);
+    // dá um instante pro navegador aplicar o CSS antes de abrir a impressão
+    setTimeout(()=>{ window.print(); }, 60);
+  },
   exportCSV(){
     const rows=[["Lote/Cliente","Descricao","Recebido","NumCheque","Banco","Emitente","CPF/CNPJ","Valor","BomPara","Status","Fornecedor","Referencia","Motivo"]];
     db.lotes.forEach(l=>chequesByLote(l.id).forEach(c=>{
@@ -1380,6 +1424,90 @@ function rowHTML(r){
 function renderBatchRows(rows,append){ const html=rows.map(rowHTML).join(""); if(append) $("batchRows").insertAdjacentHTML("beforeend",html); else $("batchRows").innerHTML=html; }
 function recalcTotal(rowsId,totId){ const el=$(totId); if(!el) return; let t=0; document.querySelectorAll("#"+rowsId+" .b-valor").forEach(i=>t+=parseFloat(i.value)||0); el.textContent=brl(t); }
 function updateBatchTotal(){ recalcTotal("batchRows","batchTotal"); recalcTotal("editGridRows","editGridTotal"); }
+
+/* ---------- Relatório PDF por lote ---------- */
+// Dados fixos da empresa (mesma identidade dos recibos). Se um dia virar
+// configurável, é só puxar de um cfg como nos outros sistemas.
+const EMPRESA = {
+  nome:"RM Estruturas Pré-Fabricadas",
+  razao:"Nunes & Kuhn Estruturas Metálicas Ltda",
+  cnpj:"28.654.965/0001-17",
+  endereco:"Rodovia RSC 453, 6151 Km 42 · Bairro Novo Paraíso · Estrela/RS"
+};
+function chequeDestino(c){
+  if(c.status==="repassado"&&c.fornecedor) return "→ "+esc(c.fornecedor)+(c.refRepasse?' <span class="sub">'+esc(c.refRepasse)+'</span>':'');
+  if(c.status==="devolvido"&&c.motivo) return esc(c.motivo);
+  if(c.status==="depositado") return "Depositado"+(c.depositadoEm?" "+fmtDate(c.depositadoEm):"");
+  if(c.status==="compensado") return "Compensado";
+  return "—";
+}
+function loteReportHTML(loteId){
+  const lote=db.lotes.find(l=>l.id===loteId); if(!lote) return "";
+  const cheques=chequesByLote(loteId).slice().sort((a,b)=>
+    (a.bomPara||"9999").localeCompare(b.bomPara||"9999") || (a.criadoEm||0)-(b.criadoEm||0));
+  const total=loteTotal(loteId);
+  const logo=(document.getElementById("brandLogo")||{}).src||"";
+  const agora=new Date();
+  const geradoEm=fmtDate(todayISO())+" "+String(agora.getHours()).padStart(2,"0")+":"+String(agora.getMinutes()).padStart(2,"0");
+
+  // totais por status (útil pra contabilidade)
+  const porStatus={};
+  cheques.forEach(c=>{ porStatus[c.status]=(porStatus[c.status]||0)+(Number(c.valor)||0); });
+  const bystRows=Object.keys(STATUS).filter(k=>porStatus[k]!=null).map(k=>
+    `<div class="row"><span>${STATUS[k].label}</span><span class="mono">${brl(porStatus[k])}</span></div>`).join("");
+
+  const linhas=cheques.map((c,i)=>{
+    const st=STATUS[c.status]||STATUS.carteira;
+    return `<tr>
+      <td class="c">${i+1}</td>
+      <td class="mono">${esc(c.numero)||"—"}</td>
+      <td>${esc(c.emitente)||"—"}${c.doc?'<div class="sub">'+esc(c.doc)+'</div>':''}</td>
+      <td>${esc(bankLabel(c.banco))}</td>
+      <td class="c">${fmtDate(c.bomPara)}</td>
+      <td><span class="tag" style="background:${st.bg};color:${st.color}">${st.label}</span></td>
+      <td>${chequeDestino(c)}</td>
+      <td class="r mono">${brl(c.valor)}</td>
+    </tr>`;
+  }).join("");
+
+  return `<div class="rep">
+    <div class="head">
+      <img src="${logo}" alt="RM">
+      <div class="co">
+        <div class="nm">${esc(EMPRESA.nome)}</div>
+        <div>${esc(EMPRESA.razao)}</div>
+        <div>CNPJ ${esc(EMPRESA.cnpj)}</div>
+        <div>${esc(EMPRESA.endereco)}</div>
+      </div>
+    </div>
+    <div class="title">Relatório de cheques &middot; lote</div>
+    <div class="subttl">Gerado em ${geradoEm}</div>
+    <div class="meta">
+      <span><b>Cliente:</b> ${esc(lote.cliente)||"—"}</span>
+      <span><b>Descrição:</b> ${esc(lote.desc)||"—"}</span>
+      <span><b>Recebido em:</b> ${fmtDate(lote.data)}</span>
+      <span><b>Qtd. de cheques:</b> ${cheques.length}</span>
+    </div>
+    <table>
+      <thead><tr>
+        <th class="c" style="width:24px">#</th>
+        <th>Nº cheque</th>
+        <th>Emitente / CPF-CNPJ</th>
+        <th>Banco</th>
+        <th class="c">Bom para</th>
+        <th>Status</th>
+        <th>Destino</th>
+        <th class="r">Valor</th>
+      </tr></thead>
+      <tbody>${linhas||'<tr><td colspan="8" class="c" style="padding:18px;color:#8a9099">Nenhum cheque neste lote.</td></tr>'}</tbody>
+      <tfoot><tr class="grand"><td colspan="7">TOTAL DO LOTE (${cheques.length} cheque${cheques.length===1?"":"s"})</td><td class="r mono">${brl(total)}</td></tr></tfoot>
+    </table>
+    ${bystRows?`<div class="byst"><div class="bt">Totais por situação</div>${bystRows}</div>`:""}
+    ${lote.obs?`<div class="meta" style="margin-top:12px"><span><b>Observações:</b> ${esc(lote.obs)}</span></div>`:""}
+    <div class="foot">${esc(EMPRESA.nome)} &middot; Controle de Cheques &middot; documento gerado para a contabilidade</div>
+  </div>`;
+}
+window.addEventListener("afterprint",()=>{ const r=$("printRoot"); if(r) r.innerHTML=""; });
 
 /* ---------- misc ---------- */
 function logHist(c,tipo,detalhe,data){ if(!c.hist) c.hist=[]; c.hist.push({tipo,detalhe,data:data||null,ts:Date.now()}); }
