@@ -256,7 +256,11 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .rep .byst .row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted #dfe2e6;max-width:360px;font-size:10.5px}
 .rep .foot{margin-top:22px;text-align:center;font-size:9px;color:#9aa1aa;border-top:1px solid #dadee3;padding-top:8px}
 @media print{
-  @page{size:A4 portrait;margin:12mm 12mm}
+  /* Dimensões explícitas em mm (paisagem) em vez da palavra-chave "landscape":
+     alguns drivers do Windows (Microsoft Print to PDF) ignoram a palavra e
+     giram só o conteúdo, deixando a folha na vertical. Com o tamanho em mm a
+     folha sai na horizontal de verdade, junto com o conteúdo. */
+  @page{size:297mm 210mm;margin:10mm 12mm}
   html,body{background:#fff !important}
   body > *:not(#printRoot){display:none !important}
   #printRoot{display:block !important}
